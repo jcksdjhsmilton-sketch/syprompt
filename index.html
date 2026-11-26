@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>SyPrompt</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <b>Sy<span>Prompt</span></b>
+  <nav>
+    <button data-tab="prompt" class="on">Prompt</button>
+    <button data-tab="chat">Chat</button>
+    <button data-tab="tools">Tools</button>
+    <button data-tab="rag">RAG</button>
+    <button data-tab="config">Config</button>
+  </nav>
+</header>
+<main>
+  <section id="prompt" class="on">
+    <div class="cell">
+      <div class="cellbar"><code>In [1]: system_prompt</code><small id="pstate"></small></div>
+      <textarea id="sys" spellcheck="false" aria-label="System prompt"></textarea>
+      <div class="row">
+        <button id="psave" class="primary">▶ Aplicar</button>
+        <button id="preset">Restaurar padrão</button>
+        <button id="pexport">Exportar</button>
+        <label class="btn">Importar<input id="pimport" type="file" accept=".txt,.md" hidden></label>
+        <small id="pcount"></small>
+      </div>
+    </div>
+    <p class="hint">O texto aplicado é enviado como mensagem <code>system</code> a partir da próxima mensagem. Use "Nova conversa" para testar sem histórico.</p>
+  </section>
+
+  <section id="chat">
+    <div id="log" aria-live="polite"></div>
+    <form id="form">
+      <textarea id="msg" rows="2" placeholder="Mensagem (Ctrl+Enter envia)"></textarea>
+      <div class="row">
+        <button class="primary" id="send">Enviar</button>
+        <button type="button" id="stop" disabled>Parar</button>
+        <button type="button" id="clear">Nova conversa</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="tools">
+    <div class="row"><button id="allon">Ligar todas</button><button id="alloff">Desligar todas</button></div>
+    <p class="hint">Menos ferramentas ligadas = menos tokens por mensagem.</p>
+    <div id="toollist"></div>
+  </section>
+
+  <section id="rag">
+    <h2>Base de conhecimento (BM25 local)</h2>
+    <div class="row">
+      <label class="btn">Adicionar arquivos<input id="files" type="file" multiple hidden accept=".txt,.md,.json,.csv,.log,.lua,.luau,.c,.h,.cpp,.hpp,.py,.rs,.js,.ts,.html,.css,.xml,.yml,.yaml,.toml,.ini"></label>
+      <button id="ragclear">Limpar base</button>
+    </div>
+    <div class="row"><input id="ragurl" type="url" placeholder="https://página-para-indexar"><button id="ragadd">Indexar URL</button></div>
+    <p id="ragstatus" class="hint"></p>
+    <ul id="doclist"></ul>
+  </section>
+
+  <section id="config">
+    <label>Chave da API Groq<input id="key" type="password" autocomplete="off" placeholder="gsk_..."></label>
+    <label>Chave Jina (opcional)<input id="jina" type="password" autocomplete="off" placeholder="jina_..."></label>
+    <label class="check"><input id="remember" type="checkbox"> Lembrar chaves neste navegador</label>
+    <label>Modelo<select id="model"></select></label>
+    <button id="loadmodels">Atualizar lista de modelos</button>
+    <label>Temperatura <output id="tout"></output><input id="temp" type="range" min="0" max="2" step="0.1"></label>
+    <label>Máx. tokens de resposta<input id="maxtok" type="number" min="256" max="32768" step="256"></label>
+    <label>Reasoning (gpt-oss)<select id="effort"><option>low</option><option>medium</option><option>high</option></select></label>
+    <label>Máx. caracteres por resultado de ferramenta<input id="maxchars" type="number" min="1000" max="40000" step="1000"></label>
+    <label class="check"><input id="confirmnet" type="checkbox"> Confirmar todo acesso à rede feito pela IA</label>
+    <p id="cstatus" class="hint"></p>
+  </section>
+</main>
+<script src="system-prompt.js"></script>
+<script src="rag.js"></script>
+<script src="tools.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
